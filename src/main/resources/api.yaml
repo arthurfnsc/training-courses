@@ -1,0 +1,81 @@
+swagger: '2.0'
+info:
+  title: Payfast API
+  description: Pagamentos rápidos
+  version: 1.0.0
+host: localhost:8080
+basePath: /fj36-payfast/v1
+schemes:
+  - http
+  - https
+definitions:
+  Transacao:
+    type: object
+    properties:
+      codigo:
+        type: string
+      titular:
+        type: string
+      data:
+        type: string
+        format: date
+      valor:
+        type: number
+        format: double
+  Pagamento:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      status:
+        type: string
+      valor:
+        type: number
+        format: double
+parameters:
+  pagamento-id:
+    name: id
+    in: path
+    description: id do pagamento
+    type: integer
+    format: int32
+    required: true
+paths:
+  /pagamentos:
+    post:
+      summary: Cria novo pagamento
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: transacao
+          required: true
+          schema:
+            $ref: '#/definitions/Transacao'
+      responses:
+        '201':
+          description: Novo pagamento criado
+          schema:
+            $ref: '#/definitions/Pagamento'
+          headers:
+            Location:
+              description: uri do novo pagamento
+              type: string  
+  /pagamentos/{id}:
+    put:
+      summary: Confirma um pagamento
+      parameters:
+        - $ref: '#/parameters/pagamento-id'
+      responses:
+        '200':
+          description: 'Pagamento confirmado'
+    delete:
+      summary: Cancela um pagamento
+      parameters:
+        - $ref: '#/parameters/pagamento-id'
+      responses:
+        '200':
+          description: 'Pagamento cancelado'
