@@ -1,0 +1,180 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Training Courses API",
+        "description": "Manage your training courses",
+        "version": "1.0.0"
+    },
+
+    "host": "localhost:8080",
+    "basePath": "/training-courses/v1",
+    "schemes": 
+    [
+        "http",
+        "https"
+    ],
+
+    "definitions": {
+        "Address": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+
+                "uf": {
+                    "type": "string"
+                },
+
+                "zipcode": {
+                    "type": "string"
+                },
+
+                "latitude": {
+                    "type": "number",
+                    "format": "double"
+                },
+
+                "longitude": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+
+        "Course": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+
+                "description": {
+                    "type": "string"
+                },
+
+                "duration": {
+                    "type": "number",
+                    "format": "int32"
+                }
+            }
+        },
+
+        "createInstitutionRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+
+                "description": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "object",
+                    "items": {
+                        "$ref": "#/definitions/Address"
+                    }
+                }
+            }
+        },
+
+        "createInstitutionResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+
+        "Institution": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+
+                "name": {
+                    "type": "string"
+                },
+
+                "description": {
+                    "type": "string"
+                },
+
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Address"
+                    }
+                },
+
+                "courses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Course"
+                    }
+                }
+            }
+        }
+    },
+
+    "paths": {
+        "/institution": {
+            "post": {
+                "summary": "Create institution",
+                "description": "Create institution course.",
+                "parameters": 
+                [
+                    {
+                        "name": "institution",
+                        "in": "body",
+                        "description": "Institution",
+                        "required": true,
+                        "type": "#/definitions/createInstitutionRequest"
+                    }
+                ],
+                "tags": [
+                    "Institution"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Institution identifier",
+                        "schema": {
+                            "type": "#/definitions/createInstitutionResponse"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/institutions": {
+            "get": {
+            "summary": "Create institution",
+                "description": "Create institution course.",
+                "parameters": 
+                [
+                    {
+                        "name": "identifier",
+                        "in": "query",
+                        "description": "Identifier",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Institution"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Institution information",
+                        "schema": {
+                            "$ref": "#/definitions/Institution"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
