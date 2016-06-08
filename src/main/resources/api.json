@@ -60,7 +60,7 @@
             }
         },
 
-        "createInstitutionRequest": {
+        "CreateInstitutionRequest": {
             "type": "object",
             "properties": {
                 "name": {
@@ -70,19 +70,40 @@
                 "description": {
                     "type": "string"
                 },
+
                 "address": {
                     "type": "object",
                     "items": {
                         "$ref": "#/definitions/Address"
                     }
+                },
+
+                "courses": {
+                    "type": "object",
+                    "items": {
+                        "$ref": "#/definitions/Course"
+                    }
                 }
             }
         },
 
-        "createInstitutionResponse": {
+        "CreateInstitutionResponse": {
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "string"
+                }
+            }
+        },
+
+        "Error": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+
+                "description": {
                     "type": "string"
                 }
             }
@@ -117,60 +138,312 @@
                     }
                 }
             }
+        },
+
+        "UpdateInstitutionRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+
+        "Validation": {
+            "type": "object",
+            "properties": {
+                "validation": {
+                    "type": "boolean"
+                }
+            }
         }
     },
 
     "paths": {
         "/institution": {
             "post": {
-                "summary": "Create institution",
-                "description": "Create institution course.",
+                "summary": "create",
+                "description": "Create institution",
+                "produces": 
+                [
+                    "application/json"
+                ],
+
                 "parameters": 
                 [
                     {
-                        "name": "institution",
                         "in": "body",
+                        "name": "institution",
                         "description": "Institution",
                         "required": true,
-                        "type": "#/definitions/createInstitutionRequest"
+                        "schema": {
+                            "$ref": "#/definitions/CreateInstitutionRequest"
+                        }
                     }
                 ],
-                "tags": [
-                    "Institution"
+
+                "tags": 
+                [
+                    "institution"
                 ],
+
                 "responses": {
                     "201": {
                         "description": "Institution identifier",
                         "schema": {
-                            "type": "#/definitions/createInstitutionResponse"
+                            "$ref": "#/definitions/CreateInstitutionResponse"
+                        }
+                    },
+
+                    "400": {
+                        "description": "Execution not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
                         }
                     }
                 }
             }
         },
 
-        "/institutions": {
-            "get": {
-            "summary": "Create institution",
-                "description": "Create institution course.",
+        "/institution/{institutionid}": {
+            "delete": {
+                "summary": "delete",
+                "description": "Delete institution",
+                "produces": 
+                [
+                    "application/json"
+                ],
+
                 "parameters": 
                 [
                     {
-                        "name": "identifier",
-                        "in": "query",
-                        "description": "Identifier",
+                        "in": "path",
+                        "name": "institutionid",
+                        "description": "Institution ID",
                         "required": true,
                         "type": "string"
                     }
                 ],
-                "tags": [
-                    "Institution"
+
+                "tags": 
+                [
+                    "institution"
                 ],
+
                 "responses": {
                     "200": {
-                        "description": "Institution information",
+                        "description": "Execution validation",
+                        "schema": {
+                            "$ref": "#/definitions/Validation"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Institution not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+
+            "get": {
+                "summary": "retrieve",
+                "description": "Retrieve institution",
+                "produces": 
+                [
+                    "application/json"
+                ],
+
+                "parameters": 
+                [
+                    {
+                        "in": "path",
+                        "name": "institutionid",
+                        "description": "Institution ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+
+                "tags": 
+                [
+                    "institution"
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Institution",
                         "schema": {
                             "$ref": "#/definitions/Institution"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Institution not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+
+            "put": {
+                "summary": "update",
+                "description": "Update institution",
+                "produces": 
+                [
+                    "application/json"
+                ],
+
+                "parameters": 
+                [
+                    {
+                        "in": "path",
+                        "name": "institutionid",
+                        "description": "Institution ID",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "in": "body",
+                        "name": "institution",
+                        "description": "Institution",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateInstitutionRequest"
+                        }
+                    }
+                ],
+
+                "tags": 
+                [
+                    "institution"
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Execution validation",
+                        "schema": {
+                            "$ref": "#/definitions/Validation"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Institution not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/institution/{institutionid}/address": {
+            "put": {
+                "summary": "update",
+                "description": "Add address institution",
+                "produces": 
+                [
+                    "application/json"
+                ],
+
+                "parameters": 
+                [
+                    {
+                        "in": "path",
+                        "name": "institutionid",
+                        "description": "Institution ID",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "in": "body",
+                        "name": "address",
+                        "description": "Institution Address",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Address"
+                        }
+                    }
+                ],
+
+                "tags": 
+                [
+                    "institution"
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Execution validation",
+                        "schema": {
+                            "$ref": "#/definitions/Validation"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Institution not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/institution/{institutionid}/course": {
+            "put": {
+                "summary": "update",
+                "description": "Add course institution",
+                "produces": 
+                [
+                    "application/json"
+                ],
+
+                "parameters": 
+                [
+                    {
+                        "in": "path",
+                        "name": "institutionid",
+                        "description": "Institution ID",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "in": "body",
+                        "name": "course",
+                        "description": "Institution course",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Course"
+                        }
+                    }
+                ],
+
+                "tags": 
+                [
+                    "institution"
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Execution validation",
+                        "schema": {
+                            "$ref": "#/definitions/Validation"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Institution not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
                         }
                     }
                 }
