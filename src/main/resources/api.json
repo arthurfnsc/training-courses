@@ -71,15 +71,15 @@
                     "type": "string"
                 },
 
-                "address": {
-                    "type": "object",
+                "addresses": {
+                    "type": "array",
                     "items": {
                         "$ref": "#/definitions/Address"
                     }
                 },
 
                 "courses": {
-                    "type": "object",
+                    "type": "array",
                     "items": {
                         "$ref": "#/definitions/Course"
                     }
@@ -168,6 +168,10 @@
             "post": {
                 "summary": "create",
                 "description": "Create institution",
+                "consumes": 
+                [
+                    "application/json"
+                ],
                 "produces": 
                 [
                     "application/json"
@@ -213,6 +217,10 @@
             "delete": {
                 "summary": "delete",
                 "description": "Delete institution",
+                "consumes": 
+                [
+                    "application/json"
+                ],
                 "produces": 
                 [
                     "application/json"
@@ -254,6 +262,10 @@
             "get": {
                 "summary": "retrieve",
                 "description": "Retrieve institution",
+                "consumes": 
+                [
+                    "application/json"
+                ],
                 "produces": 
                 [
                     "application/json"
@@ -295,6 +307,10 @@
             "put": {
                 "summary": "update",
                 "description": "Update institution",
+                "consumes": 
+                [
+                    "application/json"
+                ],
                 "produces": 
                 [
                     "application/json"
@@ -348,6 +364,10 @@
             "put": {
                 "summary": "update",
                 "description": "Add address institution",
+                "consumes": 
+                [
+                    "application/json"
+                ],
                 "produces": 
                 [
                     "application/json"
@@ -401,6 +421,10 @@
             "put": {
                 "summary": "update",
                 "description": "Add course institution",
+                "consumes": 
+                [
+                    "application/json"
+                ],
                 "produces": 
                 [
                     "application/json"
